@@ -14,7 +14,7 @@ function getMessage(name) {
     });
 }
 
-let name = 'hoge huga';
+const name = 'hoge huga';
 // let name = 111;
 
 getMessage(name)
