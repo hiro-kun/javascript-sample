@@ -1,22 +1,18 @@
 'use strict';
 
-const IMG_DIR = 'img/';
-const IMG_OUTPUT_DIR = 'out/';
-const IMG_HEIGHT = 500;
-const IMG_WIDTH = 500;
+const ResizeImage = class {
 
-const jimp = require('jimp');
+    constructor(img_dir, img_output_dir) {
+        this.img_dir = 'img/';
+        this.output_dir = 'out/';
+    }
 
-
-
-const resizeImage = class {
-
-    static retrieveTargetFilePathList()
+    retrieveTargetFilePathList()
     {
         return new Promise((resolve, reject) => {
             const fs = require('fs');
 
-            fs.readdir(IMG_DIR, (err, files) => {
+            fs.readdir(this.img_dir, (err, files) => {
 
                 if (err) reject(err);
 
@@ -41,13 +37,14 @@ const resizeImage = class {
         });
     }
 
-    static imageResize(file)
+    imageResize(file, height, width)
     {
         const path = require('path');
-        const image_write_path =  `${IMG_OUTPUT_DIR}${path.basename(file, path.extname(file))}_out.jpg`;
+        const jimp = require('jimp');
+        const image_write_path = `${this.output_dir}${path.basename(file, path.extname(file))}_out.jpg`;
 
-        jimp.read(IMG_DIR + file).then(lenna => {
-            lenna.resize(IMG_HEIGHT, IMG_WIDTH)
+        jimp.read(this.img_dir + file).then(lenna => {
+            lenna.resize(height, width)
                 .quality(100)
                 .greyscale()
                 .write(image_write_path);
@@ -60,10 +57,12 @@ const resizeImage = class {
     }
 }
 
+const resizeImage = new ResizeImage('img/', 'out/');
+
 resizeImage.retrieveTargetFilePathList()
     .then((files) => {
         Promise.all(files.map(file => {
-            resizeImage.imageResize(file);
+            resizeImage.imageResize(file, 500, 500);
         }));
     }).catch((error) => {
         console.log(error);
