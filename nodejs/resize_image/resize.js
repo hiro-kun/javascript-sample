@@ -13,7 +13,7 @@ const jimp = require('jimp');
  * @return {array} リサイズ対象ファイル
  * @throws {object} エラーオブジェクト
 */
-function getImagesPath()
+function retrieveTargetFilePathList()
 {
     return new Promise((resolve, reject) => {
         const fs = require('fs');
@@ -22,12 +22,11 @@ function getImagesPath()
 
             if (err) reject(err);
 
-            let target_files = [];
+            const target_files = [];
 
             files.forEach(file => {
 
-                // リサイズ済のファイルの場合はスキップ
-                if (file.match(/out/)) {
+                if (/out/.test(file)) {
                     return;
                 }
 
@@ -53,7 +52,7 @@ function getImagesPath()
 function imageResize(file)
 {
     const path = require('path');
-    const image_write_path = IMG_OUTPUT_DIR + path.basename(file, path.extname(file)) + '_out.jpg';
+    const image_write_path =  `${IMG_OUTPUT_DIR}${path.basename(file, path.extname(file))}_out.jpg`;
 
     jimp.read(IMG_DIR + file).then(lenna => {
         lenna.resize(IMG_HEIGHT, IMG_WIDTH)
@@ -71,7 +70,7 @@ function imageResize(file)
 
 
 
-getImagesPath()
+retrieveTargetFilePathList()
     .then((files) => {
         Promise.all(files.map(file => {
             imageResize(file);
