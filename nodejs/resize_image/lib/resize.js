@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = class {
+module.exports = class ResizeImage {
 
     constructor(img_dir, img_output_dir) {
         this.img_dir = 'img/';

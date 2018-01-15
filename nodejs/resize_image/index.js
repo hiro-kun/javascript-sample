@@ -1,4 +1,4 @@
-const ResizeImage = require('./resize.js');
+const ResizeImage = require('./lib/resize.js');
 const resizeImage = new ResizeImage('img/', 'out/');
 
 const main = async() => {
