@@ -39,31 +39,42 @@ const ResizeImage = class {
 
     imageResize(file, height, width)
     {
-        const path = require('path');
-        const jimp = require('jimp');
-        const image_write_path = `${this.output_dir}${path.basename(file, path.extname(file))}_out.jpg`;
+        return new Promise((resolve, reject) => {
+            const path = require('path');
+            const jimp = require('jimp');
+            const image_write_path = `${this.output_dir}${path.basename(file, path.extname(file))}_out.jpg`;
 
-        jimp.read(this.img_dir + file).then(lenna => {
-            lenna.resize(height, width)
-                .quality(100)
-                .greyscale()
-                .write(image_write_path);
-        }).then(() => {
-            console.log(image_write_path + ' is Resized.');
-        }).catch(err => {
-            console.log('Image resize error.');
-            console.log(err);
+            jimp.read(this.img_dir + file).then(lenna => {
+                lenna.resize(height, width)
+                    .quality(100)
+                    .greyscale()
+                    .write(image_write_path);
+
+                resolve(image_write_path + ' is Resized.');
+
+            }).catch(err => {
+                console.log(err);
+                reject(err);
+            });
         });
     }
-}
+};
+
+
+
+// 下記はファイル分離
 
 const resizeImage = new ResizeImage('img/', 'out/');
 
-resizeImage.retrieveTargetFilePathList()
-    .then((files) => {
-        Promise.all(files.map(file => {
-            resizeImage.imageResize(file, 500, 500);
-        }));
-    }).catch((error) => {
-        console.log(error);
-    });
+const main = async() => {
+    const resizeTargetFileList = await resizeImage.retrieveTargetFilePathList();
+
+    for (let i = 0; i < resizeTargetFileList.length; i += 1) {
+        const result = await resizeImage.imageResize(resizeTargetFileList[i], 500, 500);
+        console.log(result);
+    }
+
+    console.log('Process all finish.')
+};
+
+main();
