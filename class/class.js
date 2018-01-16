@@ -1,30 +1,28 @@
-'use strict';
-
 const Sample = class {
-    constructor(name, age) {
-        this.name = name;
-        this.age = age;
-    }
+  constructor(name, age) {
+    this.name = name;
+    this.age = age;
+  }
 
-    // public
-    getName () {
-        return this.name;
-    }
+  // public
+  getName() {
+    return this.name;
+  }
 
-    // public
-    getAge() {
-        return this.age;
-    }
+  // public
+  getAge() {
+    return this.age;
+  }
 
-    // public
-    getUserInfo() {
-        return 'Name is ' + this.getName() + '. Age is ' + this.getAge() + '.';
-    }
+  // public
+  getUserInfo() {
+    return `Name is ${this.getName()}. Age is ${this.getAge()}.`;
+  }
 
-    // static
-    static staticSample() {
-        return 'Static Sample.';
-    }
+  // static
+  static staticSample() {
+    return 'Static Sample.';
+  }
 };
 
 
