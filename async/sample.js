@@ -1,23 +1,20 @@
-'use strict';
 
-function exec (message, ms) {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            console.log(message);
+const exec = (message, ms) => new Promise((resolve) => {
+  setTimeout(() => {
+    console.log(message);
 
-            resolve();
-        }, ms);
-    });
-}
+    resolve();
+  }, ms);
+});
 
-async function hello() {
-    await exec('exec1', 500);
-    await exec('exec2', 300);
-    await exec('exec3', 200);
-    await exec('exec4', 100);
+const hello = async () => {
+  await exec('exec1', 500);
+  await exec('exec2', 300);
+  await exec('exec3', 200);
+  await exec('exec4', 100);
 
-    console.log('finish');
-}
+  console.log('finish');
+};
 
 hello();
 
