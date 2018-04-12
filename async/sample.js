@@ -1,4 +1,3 @@
-
 const exec = (message, ms) => new Promise((resolve) => {
   setTimeout(() => {
     console.log(message);
